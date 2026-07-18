@@ -1,0 +1,5 @@
+{
+  "model": "qwen2.5-coder:1.5b",
+  "response": "CLAIM symbol CUdeviceptr",
+  "prompt": "Complete this line only:\nCLAIM symbol \nInvent a realistic CUDA driver symbol (starts with cu) that is NOT main, _start, or printf."
+}

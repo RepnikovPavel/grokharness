@@ -1,0 +1,5 @@
+{
+  "model": "qwen2.5-coder:1.5b",
+  "response": "CLAIM import tensorrt 10",
+  "prompt": "Complete this line only:\nCLAIM import \nInvent a unique Python package name (snake_case) for a brand-new TensorRT 10 binding that does not exist on PyPI yet. Do not use torch, numpy, sys, or os."
+}

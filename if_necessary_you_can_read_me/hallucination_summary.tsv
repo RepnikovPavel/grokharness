@@ -1,0 +1,11 @@
+metric	value
+total_cases	10
+tp	5
+tn	5
+fp	0
+fn	0
+accuracy	1.0000
+precision	1.0000
+recall_catch_rate	1.0000
+false_positive_rate	0.0000
+avg_latency_ms	14.866

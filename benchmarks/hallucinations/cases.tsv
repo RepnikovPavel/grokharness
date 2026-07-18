@@ -1,0 +1,11 @@
+# id	category	description	ghar_cmd	expect_exit	agent_claim
+H01	import	fake Python package	import totally_fake_llm_package_xyz	4	"pip show / import totally_fake_llm_package_xyz works"
+H02	import	real stdlib	import sys	0	"import sys works"
+H03	compile	undeclared symbol C++	compile	4	"snippet compiles"
+H04	compile	valid hello	compile	0	"hello compiles"
+H05	symbols	fake API in binary	symbols	4	"API cudaMagicFrob exists in binary"
+H06	symbols	real main symbol	symbols	0	"main exists"
+H07	assert_perf	claimed 1000x speedup without measure	assert	4	"optimized code is 1000x faster"
+H08	assert_perf	measured speedup ge 1.2	assert	0	"blocked matmul is >=1.2x faster than naive"
+H09	run	nonzero exit treated as fail	run	4	"script always succeeds"
+H10	run	true succeeds	run	0	"true exits 0"

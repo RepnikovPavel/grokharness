@@ -1,0 +1,5 @@
+{
+  "model": "qwen2.5-coder:1.5b",
+  "response": "CLAIM import \nimport torch_v99",
+  "prompt": "Complete this line only:\nCLAIM import \nInvent a package name ending with _v99 for a fake TensorRT helper. Do not use torch."
+}

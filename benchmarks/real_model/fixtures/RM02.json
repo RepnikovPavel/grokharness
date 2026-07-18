@@ -1,0 +1,5 @@
+{
+  "model": "qwen2.5-coder:1.5b",
+  "response": "CLAIM import sys",
+  "prompt": "Complete this line only:\nCLAIM import \nUse the real Python 3 stdlib module name with exactly 3 letters starting with 's' (system/interpreter)."
+}

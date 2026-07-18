@@ -1,0 +1,5 @@
+{
+  "model": "qwen2.5-coder:1.5b",
+  "response": "CLAIM symbol Main",
+  "prompt": "Complete this line only:\nCLAIM symbol \nWrite exactly: main"
+}

@@ -1,0 +1,11 @@
+id	category	agent_claim	expect_exit	got_exit	status	caught	latency_ms	detail
+H01	import	fake package exists	4	4	pass	1	64.585	kind result detail=missing imports: totally_fake_llm_package_xyz exit_code=4 id=2026-07-18T09-44-56Z-c4ce3993 kind=import m.err.totally_fake_llm_package_xyz=Tra
+H02	import	sys imports	0	0	pass	0	14.936	kind result detail=all imports ok exit_code=0 id=2026-07-18T09-44-56Z-83914251 kind=import m.fail=0 m.missing_list= m.ok=1 m.ok_list=sys m.requested=1 m.wall_ms
+H03	compile	bad C++ compiles	4	4	pass	1	8.456	kind result detail=compile failed: bad.cpp:1:20: error: ‘no_such_identifier_abc’ was not declared in this scope | 1 | int main(){ return no_such_identifier_
+H04	compile	hello compiles	0	0	pass	0	37.875	kind result detail=compile ok → ./.ghar/bin_H04 exit_code=0 id=2026-07-18T09-44-56Z-a1d4dcbf kind=compile m.binary_bytes=15960 m.binary_exists=1 m.cmd=/usr/bi
+H05	symbols	fake API in binary	4	4	pass	1	4.896	kind result detail=missing symbols: cudaMagicFrobEx exit_code=4 id=2026-07-18T09-44-56Z-f8f12680 kind=symbols m.found=0 m.found_list= m.missing=1 m.missing_list
+H06	symbols	main exists	0	0	pass	0	4.328	kind result detail=all symbols found exit_code=0 id=2026-07-18T09-44-56Z-c0c7e28a kind=symbols m.found=1 m.found_list=main m.missing=0 m.missing_list= m.request
+H07	assert_perf	1000x speedup claim	4	4	pass	1	2.142	kind result detail=ASSERT FAIL: speedup=1.695646 not ge 1000 (not >=) exit_code=4 id=2026-07-18T09-44-56Z-70d22908 kind=assert m.actual=1.695646 m.expected=1000
+H08	assert_perf	>=1.2x speedup measured	0	0	pass	0	2.420	kind result detail=speedup=1.695646 ge 1.2 exit_code=0 id=2026-07-18T09-44-56Z-09b73c57 kind=assert m.actual=1.695646 m.expected=1.2 m.from=mat_vs m.metric=spee
+H09	run	false exits 0	4	4	pass	1	4.393	kind result detail=exit 1 != expect 0 exit_code=4 id=2026-07-18T09-44-56Z-f7012b7c kind=run m.cmd=false m.expect_exit=0 m.proc_exit=1 m.stderr_bytes=0 m.stderr_
+H10	run	true exits 0	0	0	pass	0	4.627	kind result detail=run ok exit_code=0 id=2026-07-18T09-44-56Z-73f8208c kind=run m.cmd=true m.expect_exit=0 m.proc_exit=0 m.stderr_bytes=0 m.stderr_fp=cbf29ce484

@@ -1,0 +1,15 @@
+build/
+.ghar/
+results/
+*.o
+*.a
+*.so
+*.out
+.cache/
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+
+__pycache__/
+*.pyc
+*.pyo

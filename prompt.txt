@@ -1,0 +1,51 @@
+# ghar — grounding harness (for AI agents / LLMs)
+#
+# Industry practices: Aider auto-test, Claude Stop hooks, SWE-bench oracles.
+# Full: ./if_necessary_you_can_read_me/BEST_PRACTICES.md
+
+WHAT IT DOES
+  Programmatic anti-hallucination. NO neural network judges.
+  Primary command: ghar verify  → lint → build → test → gate
+  On fail: FEEDBACK on stderr (fix loop). Exit 4 = do not deliver to user.
+
+REQUIRED AGENT WORKFLOW
+  Short task:
+    ghar verify → exit 0 → answer user
+  Deep task (default when user asks long work / many features):
+    1. ghar work start --minutes 120 --goal "..."
+    2. loop: edit → ghar work heartbeat --note "..." → ghar verify
+    3. ghar work done → exit 0 ONLY then answer user
+  If EARLY-STOP BLOCK / work status fail: KEEP WORKING. Do not stop at 5 minutes.
+
+COMMANDS (priority order)
+  ghar work start|heartbeat|status|done|abandon
+  ghar scaffold [--force]
+  ghar config
+  ghar verify [--no-gate] [--step N] [--continue] [--deliver]
+  ghar gate | reset | report | claims
+  ghar doctor | compile | cuda | symbols | import | run | bench | assert | test
+
+CONFIG (.ghar/config or ghar.conf)
+  lint_cmd=...
+  build_cmd=...
+  test_cmd=...              # project tests = primary oracle
+  step.<name>=...           # optional domain (cuda, trtexec, ncu…)
+  on_fail=stop|continue
+  timeout_sec=600
+
+EXIT CODES
+  0 ok | 1 usage | 2 missing tool | 3 IO | 4 VERIFY FAIL
+
+INTEGRATIONS
+  Claude Stop: integrations/claude/ghar-stop.sh
+  Aider:       aider --test-cmd 'ghar verify' --auto-test
+  Agents:      AGENTS.md
+
+OUTPUT
+  TSV on stdout; FEEDBACK block on stderr when a step fails
+  --format for human tables
+
+DO NOT
+  Use another LLM to “review” instead of verify
+  Point test_cmd at `ghar verify` (recursion)
+  Deliver to user when verify ≠ 0

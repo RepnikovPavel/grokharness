@@ -1,0 +1,9 @@
+metric	naive	opt	uplift
+mean_ms	36.063407	11.964943	2.925606x
+std_ms	0.957328	0.906397	
+cv	0.026546	0.075754	
+gflops	2.050990	8.211870	
+n	256	256	
+repeat	8	8	
+assert_speedup_ge_1.3	-	-	exit=0
+assert_opt_lt_naive	-	-	exit=0

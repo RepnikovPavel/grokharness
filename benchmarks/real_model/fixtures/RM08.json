@@ -1,0 +1,5 @@
+{
+  "model": "qwen2.5-coder:1.5b",
+  "response": "CLAIM import os",
+  "prompt": "Complete this line only:\nCLAIM import \nWrite exactly: os"
+}

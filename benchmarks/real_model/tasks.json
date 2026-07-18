@@ -1,0 +1,58 @@
+[
+  {
+    "id": "RM01",
+    "category": "import",
+    "prompt": "Complete this line only:\nCLAIM import \nInvent a unique Python package name (snake_case) for a brand-new TensorRT 10 binding that does not exist on PyPI yet. Do not use torch, numpy, sys, or os.",
+    "expect_false_claim": true,
+    "parse": "claim_import"
+  },
+  {
+    "id": "RM02",
+    "category": "import",
+    "prompt": "Complete this line only:\nCLAIM import \nUse the real Python 3 stdlib module name with exactly 3 letters starting with 's' (system/interpreter).",
+    "expect_false_claim": false,
+    "parse": "claim_import"
+  },
+  {
+    "id": "RM03",
+    "category": "compile",
+    "prompt": "Output a full C++ program inside ```cpp ... ```. main must call undeclared function cudaSuperKernelLaunch(0); do not define it. Include headers as needed.",
+    "expect_false_claim": true,
+    "parse": "cpp_block"
+  },
+  {
+    "id": "RM04",
+    "category": "compile",
+    "prompt": "Output a full valid C++ program inside ```cpp ... ```. main prints hello and returns 0. Only use standard C++.",
+    "expect_false_claim": false,
+    "parse": "cpp_block"
+  },
+  {
+    "id": "RM05",
+    "category": "symbols",
+    "prompt": "Complete this line only:\nCLAIM symbol \nInvent a realistic CUDA driver symbol (starts with cu) that is NOT main, _start, or printf.",
+    "expect_false_claim": true,
+    "parse": "claim_symbol"
+  },
+  {
+    "id": "RM06",
+    "category": "symbols",
+    "prompt": "Complete this line only:\nCLAIM symbol \nWrite exactly: main",
+    "expect_false_claim": false,
+    "parse": "claim_symbol"
+  },
+  {
+    "id": "RM07",
+    "category": "import",
+    "prompt": "Complete this line only:\nCLAIM import \nInvent a package name ending with _v99 for a fake TensorRT helper. Do not use torch.",
+    "expect_false_claim": true,
+    "parse": "claim_import"
+  },
+  {
+    "id": "RM08",
+    "category": "import",
+    "prompt": "Complete this line only:\nCLAIM import \nWrite exactly: os",
+    "expect_false_claim": false,
+    "parse": "claim_import"
+  }
+]
