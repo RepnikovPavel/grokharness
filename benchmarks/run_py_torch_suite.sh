@@ -102,6 +102,15 @@ run_case T03 torch "linear model forward ok" 0 \
 run_case T04 torch "hallucinated attr in source" 4 \
   "$GHAR" torch --file "$TORCH_TD/hallucinated_attr.py" --forward --strict-attrs --name T04
 
+run_case T04b torch "hallucinated functional leaf (no parent fallback)" 4 \
+  "$GHAR" torch --file "$TORCH_TD/hallucinated_functional.py" --forward --strict-attrs --name T04b
+
+run_case T04c torch "hallucinated F.fake via import alias" 4 \
+  "$GHAR" torch --file "$TORCH_TD/hallucinated_alias_F.py" --forward --strict-attrs --name T04c
+
+run_case T04d torch "real F.relu via alias" 0 \
+  "$GHAR" torch --file "$TORCH_TD/ok_alias_F.py" --forward --strict-attrs --name T04d
+
 run_case T05 torch "shape mismatch forward" 4 \
   "$GHAR" torch --file "$TORCH_TD/bad_forward.py" --forward --name T05
 

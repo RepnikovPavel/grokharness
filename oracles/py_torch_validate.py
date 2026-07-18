@@ -140,18 +140,144 @@ def cmd_python(args: argparse.Namespace) -> int:
 
 
 def _resolve_attr(path: str) -> tuple[Any, str]:
-    """Return (object, full_path) or raise AttributeError/ImportError."""
+    """Return (object, full_path) or raise AttributeError/ImportError.
+
+    Resolves every segment of the path — no parent-module fallback.
+    """
     parts = path.split(".")
     if not parts or not parts[0]:
         raise ImportError(f"empty attr path: {path}")
-    obj: Any = importlib.import_module(parts[0])
-    built = parts[0]
-    for p in parts[1:]:
-        if not hasattr(obj, p):
-            raise AttributeError(f"missing_attr: {built}.{p}")
-        obj = getattr(obj, p)
-        built = f"{built}.{p}"
+    # Prefer import_module for package paths (torch.nn.functional), then getattr
+    # for the remainder so torch.nn.Linear works (Linear is not a submodule).
+    obj: Any = None
+    built = ""
+    for i, p in enumerate(parts):
+        cand = ".".join(parts[: i + 1])
+        try:
+            obj = importlib.import_module(cand)
+            built = cand
+            continue
+        except ImportError:
+            if obj is None:
+                # first segment must be importable
+                if i == 0:
+                    raise ImportError(f"cannot import: {p}") from None
+                raise
+            if not hasattr(obj, p):
+                raise AttributeError(f"missing_attr: {built}.{p}") from None
+            obj = getattr(obj, p)
+            built = f"{built}.{p}"
+    assert obj is not None
     return obj, built
+
+
+def _collect_import_aliases(tree: ast.AST) -> dict[str, str]:
+    """Map local name → fully-qualified module/attr path for torch-related imports.
+
+    Examples:
+      import torch                         → {"torch": "torch"}
+      import torch.nn as nn                → {"nn": "torch.nn"}
+      import torch.nn.functional as F      → {"F": "torch.nn.functional"}
+      from torch import nn                 → {"nn": "torch.nn"}
+      from torch.nn import functional as F → {"F": "torch.nn.functional"}
+      from torch.nn.functional import relu → {"relu": "torch.nn.functional.relu"}
+    """
+    aliases: dict[str, str] = {}
+    for node in ast.walk(tree):
+        if isinstance(node, ast.Import):
+            for a in node.names:
+                full = a.name
+                local = a.asname or full.split(".")[0]
+                # only track torch* trees (and their local roots)
+                if full == "torch" or full.startswith("torch."):
+                    if a.asname:
+                        aliases[a.asname] = full
+                    else:
+                        # import torch.nn → name "torch" still binds top package
+                        # but attribute chains start from torch; record root
+                        aliases[full.split(".")[0]] = full.split(".")[0]
+                        # also record multi-segment if used as torch.nn without alias?
+                        # Standard: import torch.nn binds name "torch" only.
+                        aliases["torch"] = "torch"
+        elif isinstance(node, ast.ImportFrom) and node.module:
+            mod = node.module
+            if not (mod == "torch" or mod.startswith("torch.")):
+                continue
+            for a in node.names:
+                if a.name == "*":
+                    continue
+                full = f"{mod}.{a.name}"
+                local = a.asname or a.name
+                aliases[local] = full
+    # always know bare torch if present in any form
+    if any(v == "torch" or v.startswith("torch.") for v in aliases.values()):
+        aliases.setdefault("torch", "torch")
+    return aliases
+
+
+def _attr_chain_from_node(node: ast.Attribute) -> tuple[str | None, list[str]]:
+    """Return (root_name, [attr, attr, ...]) for root.attr.attr chains."""
+    chain: list[str] = []
+    cur: ast.AST = node
+    while isinstance(cur, ast.Attribute):
+        chain.append(cur.attr)
+        cur = cur.value
+    if isinstance(cur, ast.Name):
+        chain.reverse()
+        return cur.id, chain
+    return None, []
+
+
+def _collect_torch_attr_paths(tree: ast.AST) -> list[str]:
+    """Collect fully-qualified torch.* paths referenced in the AST.
+
+    Resolves import aliases (nn, F, functional, …) so
+    `import torch.nn.functional as F; F.fake` → torch.nn.functional.fake.
+    """
+    aliases = _collect_import_aliases(tree)
+    # also: if file does `import torch` only, aliases has torch→torch
+    # Detect bare `import torch` even without asname
+    for node in ast.walk(tree):
+        if isinstance(node, ast.Import):
+            for a in node.names:
+                if a.name == "torch" or a.name.startswith("torch."):
+                    aliases.setdefault("torch", "torch")
+        if isinstance(node, ast.ImportFrom) and node.module and (
+            node.module == "torch" or node.module.startswith("torch.")
+        ):
+            aliases.setdefault("torch", "torch")
+
+    paths: list[str] = []
+    for node in ast.walk(tree):
+        if not isinstance(node, ast.Attribute):
+            continue
+        root, chain = _attr_chain_from_node(node)
+        if root is None or not chain:
+            continue
+        if root in aliases:
+            base = aliases[root]
+            paths.append(".".join([base] + chain))
+        elif root == "torch":
+            paths.append(".".join(["torch"] + chain))
+    # from-import leaves used as bare names: `from torch.nn.functional import relu; relu(x)`
+    used_names: set[str] = set()
+    for node in ast.walk(tree):
+        if isinstance(node, ast.Name) and isinstance(node.ctx, ast.Load):
+            used_names.add(node.id)
+    for local, full in aliases.items():
+        if local in ("torch",):
+            continue
+        if local in used_names and full.startswith("torch."):
+            paths.append(full)
+
+    # de-dupe preserve order
+    seen: set[str] = set()
+    out: list[str] = []
+    for p in paths:
+        if p not in seen:
+            seen.add(p)
+            out.append(p)
+    return out
 
 
 def cmd_torch_attr(args: argparse.Namespace) -> int:
@@ -209,49 +335,39 @@ def cmd_torch(args: argparse.Namespace) -> int:
 
     m["syntax_ok"] = 1
 
-    # Scan for torch.* attribute chains used as Name.Attribute
-    # Also reject obvious hallucinated names if --strict-attrs
-    torch_attrs: list[str] = []
-    for node in ast.walk(tree):
-        if isinstance(node, ast.Attribute):
-            chain: list[str] = []
-            cur: ast.AST = node
-            while isinstance(cur, ast.Attribute):
-                chain.append(cur.attr)
-                cur = cur.value
-            if isinstance(cur, ast.Name) and cur.id == "torch":
-                chain.append("torch")
-                chain.reverse()
-                torch_attrs.append(".".join(chain))
-
+    # Scan torch.* paths including import aliases (nn, F, functional, …).
+    # --strict-attrs resolves the FULL path; no parent-module fallback
+    # (that previously accepted torch.nn.functional.<hallucinated>).
+    torch_attrs = _collect_torch_attr_paths(tree)
     m["torch_attr_refs"] = len(torch_attrs)
+    m["torch_attr_sample"] = ",".join(sorted(set(torch_attrs))[:12])
+
     if args.strict_attrs and torch_attrs:
-        missing = []
+        missing: list[str] = []
         for a in sorted(set(torch_attrs)):
-            # only check up to 3 levels deep for safety
             parts = a.split(".")
             if len(parts) < 2:
                 continue
             try:
                 _resolve_attr(a)
             except Exception:
-                # try parent only for callables like torch.nn.functional.relu
-                try:
-                    _resolve_attr(".".join(parts[:3]) if len(parts) >= 3 else a)
-                except Exception as e:
-                    missing.append(str(a))
+                missing.append(str(a))
         if missing:
             m["failure_class"] = "missing_attr"
             m["missing_list"] = ",".join(missing[:10])
             die("fail", m, f"missing_attr: {missing[0]}", EXIT_FAIL)
         m["attrs_ok"] = 1
+    elif args.strict_attrs and not torch_attrs:
+        # No torch attr refs found — still ok statically; forward may fail later
+        m["attrs_ok"] = 1
+        m["torch_attr_refs"] = 0
 
     # Optional named attrs from CLI
     if args.require_attr:
         for a in args.require_attr:
             try:
                 _resolve_attr(a)
-            except Exception as e:
+            except Exception:
                 m["failure_class"] = "missing_attr"
                 die("fail", m, f"missing_attr: {a}", EXIT_FAIL)
         m["require_attr_ok"] = 1

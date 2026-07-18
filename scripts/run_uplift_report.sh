@@ -86,9 +86,14 @@ pyt_rec=$(awk -F'\t' '$1=="recall_catch_rate"{print $2}' "$OUT_DIR/py_torch_summ
 pyt_prec=$(awk -F'\t' '$1=="precision"{print $2}' "$OUT_DIR/py_torch_summary.tsv" 2>/dev/null || echo "n/a")
 pyt_tp=$(awk -F'\t' '$1=="tp"{print $2}' "$OUT_DIR/py_torch_summary.tsv" 2>/dev/null || echo "0")
 pyt_fn=$(awk -F'\t' '$1=="fn"{print $2}' "$OUT_DIR/py_torch_summary.tsv" 2>/dev/null || echo "0")
+pyt_fp=$(awk -F'\t' '$1=="fp"{print $2}' "$OUT_DIR/py_torch_summary.tsv" 2>/dev/null || echo "0")
+pyt_fpr=$(awk -F'\t' '$1=="false_positive_rate"{print $2}' "$OUT_DIR/py_torch_summary.tsv" 2>/dev/null || echo "n/a")
 pyt_spd=$(awk -F'\t' '$1=="torch_matmul_speedup"{print $2}' "$OUT_DIR/py_torch_summary.tsv" 2>/dev/null || echo "n/a")
 pyt_naive=$(awk -F'\t' '$1=="torch_matmul_naive_ms"{print $2}' "$OUT_DIR/py_torch_summary.tsv" 2>/dev/null || echo "n/a")
 pyt_opt=$(awk -F'\t' '$1=="torch_matmul_opt_ms"{print $2}' "$OUT_DIR/py_torch_summary.tsv" 2>/dev/null || echo "n/a")
+# without validators every false claim is accepted → catch_rate 0; with = suite recall
+pyt_without="0.0000"
+pyt_with="$pyt_rec"
 
 rm_model=$(awk -F'\t' '$1=="model"{print $2}' "$OUT_DIR/real_model_summary.tsv" 2>/dev/null || echo "n/a")
 rm_catch=$(awk -F'\t' '$1=="with_harness_catch_rate"{print $2}' "$OUT_DIR/real_model_summary.tsv" 2>/dev/null || echo "n/a")
@@ -143,14 +148,19 @@ Exit: **$hall_rc** — table: \`results/hallucination_cases.tsv\`
 
 ## 3. Python / PyTorch validators
 
-Programmatic checks: AST/syntax, importlib, exec, \`torch.*\` attr resolve, Module.forward.
+Programmatic checks: AST/syntax, importlib, exec, full \`torch.*\` attr resolve
+(including import aliases like \`F\`; **no parent-module fallback** for hallucinated leaves),
+Module.forward / run_op.
 
 | Metric | Value |
 |--------|------:|
 | accuracy | **$pyt_acc** |
-| recall (catch rate) | **$pyt_rec** |
+| without validator catch_rate | **$pyt_without** |
+| with validator catch_rate | **$pyt_with** |
+| Δ catch_rate (with − without) | **$(awk -v a="$pyt_with" -v b="$pyt_without" 'BEGIN{if(a+0==a&&b+0==b)printf "%.4f",a-b; else print "n/a"}')** |
 | precision | **$pyt_prec** |
-| tp / fn | **$pyt_tp** / **$pyt_fn** |
+| false_positive_rate | **$pyt_fpr** |
+| tp / fp / fn | **$pyt_tp** / **$pyt_fp** / **$pyt_fn** |
 | in-process matmul speedup (pure-Python → torch) | **$pyt_spd**× |
 | naive_ms / opt_ms | $pyt_naive / $pyt_opt |
 

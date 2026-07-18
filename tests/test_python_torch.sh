@@ -35,6 +35,11 @@ if python3 -c "import torch" 2>/dev/null; then
   assert_exit 4 "$GHAR" torch-attr torch.nn.SuperDuperLayer --name ta_bad
   assert_exit 0 "$GHAR" torch --file "$TORCH/ok_linear.py" --forward --name t_ok
   assert_exit 4 "$GHAR" torch --file "$TORCH/hallucinated_attr.py" --strict-attrs --name t_hall
+  # no parent-module fallback for torch.nn.functional.<fake>
+  assert_exit 4 "$GHAR" torch --file "$TORCH/hallucinated_functional.py" --forward --strict-attrs --name t_func
+  # import alias F.fake must be static-checked
+  assert_exit 4 "$GHAR" torch --file "$TORCH/hallucinated_alias_F.py" --forward --strict-attrs --name t_alias
+  assert_exit 0 "$GHAR" torch --file "$TORCH/ok_alias_F.py" --forward --strict-attrs --name t_alias_ok
   assert_exit 4 "$GHAR" torch --file "$TORCH/bad_forward.py" --forward --name t_fwd
   assert_exit 0 "$GHAR" torch "$TORCH/matmul_opt.py" --forward --name t_opt
 
