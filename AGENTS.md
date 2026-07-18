@@ -50,6 +50,44 @@ bash benchmarks/run_hallucination_suite.sh
 bash tests/run_all.sh   # integration + hallucination suite on real binary
 ```
 
+## Git commit style (match `tokenc` / RepnikovPavel)
+
+Reference: the owner's **tokenc** repo voice — not Conventional Commits as Author.
+
+1. **Author** (always):
+   ```
+   RepnikovPavel <RepnikovPavel@users.noreply.github.com>
+   ```
+   Do **not** set Author to `Grok Build`, `OpenCode Agent`, or other bot identities.
+
+2. **Subject**: short **imperative English sentence** (title case OK), like tokenc:
+   - Good: `Add FEEDBACK on stderr for failed claims`
+   - Good: `Expand OpenMMLab scan to full org repos`
+   - Good: `Document commit authorship for agents`
+   - Avoid as the only style: `feat(scope): …` / `fix(ui): …` unless the rest of the
+     message still reads like a plain English change note.
+
+3. **Body**: plain prose explaining *why* and what changed; complete sentences.
+
+4. **Agent credit** (required by `/grok`, without stealing Author):
+   ```
+   Co-authored-by: Grok Build implementer <grok-build@x.ai>
+   ```
+   Also put model version in the body or a trailer, e.g. `Model: Grok 4.5 (xAI)`.
+
+5. Never commit secrets (`/grok/secrets.md`, tokens, passwords, private keys).
+
+Example:
+
+```
+Document commit authorship for agents
+
+Align ghar agent commits with the tokenc style: human Author, imperative
+subject, explanatory body, agent via Co-authored-by.
+
+Co-authored-by: Grok Build implementer <grok-build@x.ai>
+```
+
 ## This repository
 
 ```sh

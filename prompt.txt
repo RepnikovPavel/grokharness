@@ -51,6 +51,14 @@ PROVE IT CATCHES MODEL LIES (no LLM judge)
   bash benchmarks/run_hallucination_suite.sh   # H01–H10; need fn=0 fp=0
   bash tests/run_all.sh                        # includes hallucination suite
 
+GIT COMMITS (match tokenc / RepnikovPavel — not bot Author)
+  Author:  RepnikovPavel <RepnikovPavel@users.noreply.github.com>
+  Subject: short imperative English sentence (Add/Fix/Document …)
+  Body:    why + what, plain prose
+  Agent:   Co-authored-by: <agent name> + model version in body/trailer
+           (do NOT use Grok/OpenCode as Author)
+  Never commit /grok secrets, tokens, or passwords
+
 DO NOT
   Use another LLM to “review” instead of verify
   Point test_cmd at `ghar verify` (recursion)
