@@ -2,7 +2,9 @@
 # Shared helpers for ghar integration tests.
 set -euo pipefail
 
-ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+# Repo root (this file lives in dont_read_me_src/tests/)
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/../.." && pwd)"
+SRC="$ROOT/dont_read_me_src"
 # Always prefer an absolute path so tests still work after `cd` into TMPBASE.
 if [[ -n "${GHAR:-}" && -x "$GHAR" ]]; then
   if [[ "$GHAR" != /* ]]; then
@@ -17,6 +19,7 @@ else
   exit 2
 fi
 export GHAR
+export GHAR_ROOT="${GHAR_ROOT:-$ROOT}"
 
 TMPBASE="${TMPDIR:-/tmp}/ghar_tests_$$"
 mkdir -p "$TMPBASE"

@@ -43,8 +43,8 @@ ProjectConfig defaults_from_layout(const std::string& root)
     // Prefer tests/run_all.sh over full ctest so `ghar verify` does not recurse into itself.
     if (path_exists(join_path(root, "CMakeLists.txt"))) {
         c.steps.push_back({"build", "cmake --build build -j\"$(nproc 2>/dev/null || echo 2)\""});
-        if (path_exists(join_path(root, "tests/run_all.sh"))) {
-            c.steps.push_back({"test", "bash tests/run_all.sh"});
+        if (path_exists(join_path(root, "dont_read_me_src/tests/run_all.sh"))) {
+            c.steps.push_back({"test", "bash dont_read_me_src/tests/run_all.sh"});
         } else {
             c.steps.push_back(
                 {"test", "ctest --test-dir build -L integration --output-on-failure"});
@@ -83,7 +83,7 @@ std::string default_config_text()
         "\n"
         "lint_cmd=\n"
         "build_cmd=cmake --build build -j$(nproc)\n"
-        "test_cmd=bash tests/run_all.sh\n"
+        "test_cmd=bash dont_read_me_src/tests/run_all.sh\n"
         "\n"
         "# Anti-5-minute-quit (ghar work start defaults)\n"
         "min_work_minutes=60\n"

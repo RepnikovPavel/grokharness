@@ -28,7 +28,7 @@ One place to see **what failed, where**, for code and model-generated claims:
 ```sh
 # optional: generate fresh artifacts first
 cmake -S . -B build && cmake --build build -j"$(nproc)"
-bash benchmarks/run_py_torch_suite.sh
+bash dont_read_me_src/benchmarks/run_py_torch_suite.sh
 
 docker compose up --build
 # open http://127.0.0.1:8765/
@@ -43,7 +43,7 @@ docker compose up --build
 | `/benchmarks` | suite catalog + latest metrics |
 
 If `results/` is empty, the UI loads `ui/sample_results/` so pages are never blank.  
-Tests: `bash tests/test_ui_http.sh`. Details: [`ui/README.md`](ui/README.md).
+Tests: `bash dont_read_me_src/tests/test_ui_http.sh`. Details: [`ui/README.md`](ui/README.md).
 
 ## Proof it is not dead code (tests + uplift)
 
@@ -53,8 +53,8 @@ cmake -S . -B build && cmake --build build -j"$(nproc)"
 # Fast integration tests
 ctest --test-dir build -L integration --output-on-failure
 # or:
-bash tests/run_all.sh
-bash tests/test_ui_data.sh
+bash dont_read_me_src/tests/run_all.sh
+bash dont_read_me_src/tests/test_ui_data.sh
 
 # Full report: catch-rate + matmul speedup + markdown
 bash scripts/run_uplift_report.sh
@@ -75,7 +75,7 @@ bash scripts/run_uplift_report.sh
 ```sh
 # Real LLM pillar (requires Ollama + pulled model, default qwen2.5-coder:1.5b)
 ollama pull qwen2.5-coder:1.5b
-bash benchmarks/run_real_model_eval.sh
+bash dont_read_me_src/benchmarks/run_real_model_eval.sh
 bash scripts/run_uplift_report.sh   # fails if any pillar fails
 ```
 
@@ -128,8 +128,8 @@ Bug audit log: [`if_necessary_you_can_read_me/BUGS_FIXED.md`](if_necessary_you_c
 # Aider
 aider --test-cmd 'ghar verify' --auto-test
 
-# Claude Code: merge integrations/claude/settings.fragment.json
-# (Stop hook runs integrations/claude/ghar-stop.sh → ghar verify)
+# Claude Code: merge if_necessary_you_can_read_me/integrations/claude/settings.fragment.json
+# (Stop hook runs if_necessary_you_can_read_me/integrations/claude/ghar-stop.sh → ghar verify)
 ```
 
 ### Domain checks (CUDA / Python / PyTorch / claims)
@@ -149,8 +149,8 @@ ghar torch --file models/net.py --forward --device cpu --name net
 ghar verify                   # still required before user delivery
 ```
 
-Oracle (no LLM): `oracles/py_torch_validate.py` — invoked by `ghar python|torch|torch-attr`.  
-Suite: `bash benchmarks/run_py_torch_suite.sh` → `results/py_torch_summary.tsv`.
+Oracle (no LLM): `dont_read_me_src/oracles/py_torch_validate.py` — invoked by `ghar python|torch|torch-attr`.  
+Suite: `bash dont_read_me_src/benchmarks/run_py_torch_suite.sh` → `results/py_torch_summary.tsv`.
 
 Config: `ghar.conf` or `.ghar/config` (`lint_cmd`, `build_cmd`, `test_cmd`, `step.*`).  
 Details: [`if_necessary_you_can_read_me/BEST_PRACTICES.md`](if_necessary_you_can_read_me/BEST_PRACTICES.md).

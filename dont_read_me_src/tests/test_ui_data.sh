@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 # Unit-level checks on ui/data.py against sample_results (always present).
 set -euo pipefail
-ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 SCRATCH="${SCRATCH:-/tmp/grok-goal-c543634211f1/implementer}"
 mkdir -p "$SCRATCH"
 export ROOT
-SAMPLE="$ROOT/ui/sample_results"
+SAMPLE="$ROOT/dont_read_me_src/ui/sample_results"
 
 echo "== test_ui_data sample=$SAMPLE =="
 
@@ -13,7 +13,7 @@ python3 - <<PY | tee "$SCRATCH/test_ui_data.log"
 import sys
 from pathlib import Path
 repo = Path("$ROOT")
-sys.path.insert(0, str(repo / "ui"))
+sys.path.insert(0, str(repo / "dont_read_me_src" / "ui"))
 import data
 
 root = Path("$SAMPLE")

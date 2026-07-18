@@ -245,7 +245,7 @@ int cmd_scaffold(const std::string& root, bool force)
         return EXIT_IO;
 
     // Integration snippets (Claude Stop hook, Aider, AGENTS)
-    const std::string integ = join_path(root, "integrations");
+    const std::string integ = join_path(root, "if_necessary_you_can_read_me/integrations");
     mkdir_p(join_path(integ, "claude"));
     mkdir_p(join_path(integ, "aider"));
 
@@ -304,7 +304,7 @@ exit 0
         "hooks": [
           {
             "type": "command",
-            "command": "integrations/claude/ghar-stop.sh",
+            "command": "if_necessary_you_can_read_me/integrations/claude/ghar-stop.sh",
             "timeout": 600
           }
         ]
@@ -344,7 +344,7 @@ Borrowed from Aider auto-test + Claude Code Stop hooks:
 3. On failure, read **FEEDBACK on stderr** (import/compile/verify/gate), fix, re-run — do not hand-wave.
 4. Before answering the user: `ghar verify` must exit **0**. Intentional fail demos → `ghar reset`.
 5. Optional domain claims: `ghar cuda`, `ghar bench` + `ghar assert`, then verify/gate.
-6. Catch model lies: `bash benchmarks/run_hallucination_suite.sh` (need fn=0 fp=0).
+6. Catch model lies: `bash dont_read_me_src/benchmarks/run_hallucination_suite.sh` (need fn=0 fp=0).
 
 ```sh
 ghar scaffold          # write .ghar/config + hooks
@@ -372,7 +372,7 @@ ghar verify            # MUST exit 0 before user delivery
     r.kind = "scaffold";
     r.name = "integrations";
     r.status = "ok";
-    r.detail = "wrote .ghar/config + integrations/{claude,aider} + AGENTS.md";
+    r.detail = "wrote .ghar/config + if_necessary_you_can_read_me/integrations/{claude,aider} + AGENTS.md";
     r.metrics["config"] = join_path(root, ".ghar/config");
     return finish_check(store, r, false);
 }

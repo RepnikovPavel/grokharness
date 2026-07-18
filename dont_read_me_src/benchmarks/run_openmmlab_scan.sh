@@ -7,12 +7,12 @@
 #   results/README_OPENMMLAB_SNIPPET.md
 set -euo pipefail
 
-ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 export GHAR_ROOT="$ROOT"
 GHAR="${GHAR:-$ROOT/build/ghar}"
 OUT_DIR="${OUT_DIR:-$ROOT/results}"
 CACHE="${OPENMMLAB_CACHE:-$OUT_DIR/openmmlab_cache}"
-REPOS_TSV="${REPOS_TSV:-$ROOT/benchmarks/openmmlab/repos.tsv}"
+REPOS_TSV="${REPOS_TSV:-$ROOT/dont_read_me_src/benchmarks/openmmlab/repos.tsv}"
 MAX_FILES="${MAX_FILES:-0}"
 DEPTH="${CLONE_DEPTH:-1}"
 
@@ -82,7 +82,7 @@ while IFS=$'\t' read -r name url ref globs || [[ -n "${name:-}" ]]; do
   if [[ "$first" -eq 0 ]]; then
     append=(--append-findings)
   fi
-  python3 "$ROOT/oracles/repo_scan.py" \
+  python3 "$ROOT/dont_read_me_src/oracles/repo_scan.py" \
     --root "$dest" \
     --repo "$name" \
     --globs "${globs:-}" \
@@ -321,7 +321,7 @@ print(f"TOTAL files={total_files} syntax_fail={total_syn_fail} missing_attr={tot
 PY
 
 # Publish committed snapshot under benchmarks/openmmlab/ (results/ is gitignored)
-PUB="$ROOT/benchmarks/openmmlab"
+PUB="$ROOT/dont_read_me_src/benchmarks/openmmlab"
 mkdir -p "$PUB"
 cp -f "$REPORT" "$PUB/OPENMMLAB_SCAN.md"
 cp -f "$FINDINGS" "$PUB/openmmlab_findings.tsv"

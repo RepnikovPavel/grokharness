@@ -2,8 +2,9 @@
 # Run all integration tests. Exit 0 only if every suite passes.
 set -euo pipefail
 DIR="$(cd "$(dirname "$0")" && pwd)"
-ROOT="$(cd "$DIR/.." && pwd)"
+ROOT="$(cd "$DIR/../.." && pwd)"
 export GHAR="${GHAR:-$ROOT/build/ghar}"
+export GHAR_ROOT="${GHAR_ROOT:-$ROOT}"
 
 if [[ ! -x "$GHAR" ]]; then
   echo "Building ghar..."

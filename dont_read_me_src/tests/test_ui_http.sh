@@ -2,7 +2,7 @@
 # Real HTTP integration test against ui/app.py (shipped entrypoint).
 # Uses sample_results so it never depends on host scan state.
 set -euo pipefail
-ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 SCRATCH="${SCRATCH:-/tmp/grok-goal-c543634211f1/implementer}"
 mkdir -p "$SCRATCH"
 LOG="$SCRATCH/test_ui_http.log"
@@ -16,13 +16,13 @@ PY
 }
 
 PORT="$(pick_port)"
-export GHAR_RESULTS="$ROOT/ui/sample_results"
+export GHAR_RESULTS="$ROOT/dont_read_me_src/ui/sample_results"
 export GHAR_UI_HOST=127.0.0.1
 export GHAR_UI_PORT="$PORT"
 
 echo "== test_ui_http port=$PORT results=$GHAR_RESULTS ==" | tee -a "$LOG"
 
-python3 "$ROOT/ui/app.py" >>"$LOG" 2>&1 &
+python3 "$ROOT/dont_read_me_src/ui/app.py" >>"$LOG" 2>&1 &
 PID=$!
 cleanup() { kill "$PID" 2>/dev/null || true; wait "$PID" 2>/dev/null || true; }
 trap cleanup EXIT
@@ -97,9 +97,9 @@ PY
 python3 - <<PY | tee -a "$LOG"
 import sys
 from pathlib import Path
-sys.path.insert(0, "$ROOT/ui")
+sys.path.insert(0, "$ROOT/dont_read_me_src/ui")
 import data
-root = Path("$ROOT/ui/sample_results")
+root = Path("$ROOT/dont_read_me_src/ui/sample_results")
 f = data.load_code_findings(root)
 assert any(x.actionable and x.attr == "torch.nn.SuperDuperLayer" for x in f)
 assert any(not x.actionable and x.category == "accel_backend" for x in f)

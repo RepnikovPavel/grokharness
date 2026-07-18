@@ -3,7 +3,7 @@
 # Produces results/UPLIFT_REPORT.md with numbers — proof ghar is not dead code.
 set -euo pipefail
 
-ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 export OUT_DIR="${OUT_DIR:-$ROOT/results}"
 export GHAR="${GHAR:-$ROOT/build/ghar}"
 mkdir -p "$OUT_DIR"
@@ -28,28 +28,28 @@ export GHAR_ROOT="${GHAR_ROOT:-$ROOT}"
 echo
 echo ">>> [1/5] Integration tests"
 set +e
-bash "$ROOT/tests/run_all.sh" | tee "$OUT_DIR/integration.log"
+bash "$ROOT/dont_read_me_src/tests/run_all.sh" | tee "$OUT_DIR/integration.log"
 test_rc=${PIPESTATUS[0]}
 set -e
 
 echo
 echo ">>> [2/5] Hallucination catch suite (synthetic labeled claims)"
 set +e
-bash "$ROOT/benchmarks/run_hallucination_suite.sh" | tee "$OUT_DIR/hallucination.log"
+bash "$ROOT/dont_read_me_src/benchmarks/run_hallucination_suite.sh" | tee "$OUT_DIR/hallucination.log"
 hall_rc=${PIPESTATUS[0]}
 set -e
 
 echo
 echo ">>> [3/5] Python / PyTorch validators suite"
 set +e
-bash "$ROOT/benchmarks/run_py_torch_suite.sh" | tee "$OUT_DIR/py_torch.log"
+bash "$ROOT/dont_read_me_src/benchmarks/run_py_torch_suite.sh" | tee "$OUT_DIR/py_torch.log"
 pyt_rc=${PIPESTATUS[0]}
 set -e
 
 echo
 echo ">>> [4/5] Perf uplift (matmul + optional CUDA)"
 set +e
-bash "$ROOT/benchmarks/run_perf_uplift.sh" | tee "$OUT_DIR/perf.log"
+bash "$ROOT/dont_read_me_src/benchmarks/run_perf_uplift.sh" | tee "$OUT_DIR/perf.log"
 perf_rc=${PIPESTATUS[0]}
 set -e
 
@@ -58,7 +58,7 @@ echo ">>> [5/5] Real-model eval (live Ollama coding model)"
 set +e
 # Prefer SCRATCH if set (goal harness); else results/real_model_scratch
 export SCRATCH="${SCRATCH:-$OUT_DIR/real_model_scratch}"
-bash "$ROOT/benchmarks/run_real_model_eval.sh" | tee "$OUT_DIR/real_model.log"
+bash "$ROOT/dont_read_me_src/benchmarks/run_real_model_eval.sh" | tee "$OUT_DIR/real_model.log"
 real_rc=${PIPESTATUS[0]}
 set -e
 

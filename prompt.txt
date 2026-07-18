@@ -36,8 +36,13 @@ CONFIG (.ghar/config or ghar.conf)
 EXIT CODES
   0 ok | 1 usage | 2 missing tool | 3 IO | 4 VERIFY FAIL
 
+LAYOUT (like tokenc — few top-level dirs)
+  dont_read_me_src/              C++ + oracles + tests + benchmarks + ui
+  if_necessary_you_can_read_me/  docs + integrations
+  read_me_if_it_is_not_installed/ install helpers
+
 INTEGRATIONS
-  Claude Stop: integrations/claude/ghar-stop.sh
+  Claude Stop: if_necessary_you_can_read_me/integrations/claude/ghar-stop.sh
   Aider:       aider --test-cmd 'ghar verify' --auto-test
   Agents:      AGENTS.md
 
@@ -48,17 +53,16 @@ OUTPUT
   Dirty gate after intentional fail demos: ghar reset  (then re-verify)
 
 PROVE IT CATCHES MODEL LIES (no LLM judge)
-  bash benchmarks/run_hallucination_suite.sh   # H01–H10; need fn=0 fp=0
-  bash tests/run_all.sh                        # includes hallucination suite
+  bash dont_read_me_src/benchmarks/run_hallucination_suite.sh   # H01–H10
+  bash dont_read_me_src/tests/run_all.sh
 
 GIT COMMITS (match tokenc / RepnikovPavel — not bot Author)
   Author:  RepnikovPavel <RepnikovPavel@users.noreply.github.com>
   Subject: short imperative English sentence (Add/Fix/Document …)
   Body:    why + what, plain prose
-  Agent:   Co-authored-by: <agent name> + model version in body/trailer
-           (do NOT use Grok/OpenCode as Author)
+  Agent:   Co-authored-by: Grok 4.5 <grok@x.ai>
+           (literal "Grok 4.5"; never Author=agent)
   Never commit /grok secrets, tokens, or passwords
-
 DO NOT
   Use another LLM to “review” instead of verify
   Point test_cmd at `ghar verify` (recursion)

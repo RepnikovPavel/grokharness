@@ -3,7 +3,7 @@
 # Honest TP only when expect_fail and ghar exits non-zero with matching failure_class.
 set -euo pipefail
 
-ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 export GHAR_ROOT="$ROOT"
 GHAR="${GHAR:-$ROOT/build/ghar}"
 OUT_DIR="${OUT_DIR:-$ROOT/results}"
@@ -13,8 +13,8 @@ rm -rf "$WORK"
 mkdir -p "$WORK"
 cd "$WORK"
 
-PY_TD="$ROOT/testdata/python"
-TORCH_TD="$ROOT/testdata/torch"
+PY_TD="$ROOT/dont_read_me_src/testdata/python"
+TORCH_TD="$ROOT/dont_read_me_src/testdata/torch"
 
 if [[ ! -x "$GHAR" ]]; then
   echo "FAIL: ghar not found at $GHAR" >&2

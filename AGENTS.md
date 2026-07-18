@@ -36,44 +36,49 @@ Full autonomous setup for humans wiring Claude/Aider/Grok:
 
 - Project: `ghar.conf` → `build_cmd` / `test_cmd`
 - Aider: `aider --test-cmd 'ghar verify' --auto-test`
-- Claude Stop: `integrations/claude/ghar-stop.sh`
+- Claude Stop: `if_necessary_you_can_read_me/integrations/claude/ghar-stop.sh`
 - On fail: read **FEEDBACK** on stderr (exit 4) → fix → re-run. Not silent.
 - Intentional fail demos leave claims: `ghar reset` before a clean gate.
 
 ## Catching model hallucinations (run these)
 
 ```sh
-# Synthetic agent lies vs programmatic checks (import/compile/symbols/assert/run)
-bash benchmarks/run_hallucination_suite.sh
+bash dont_read_me_src/benchmarks/run_hallucination_suite.sh
 # → results/hallucination_summary.tsv  must show fn=0 fp=0 recall_catch_rate=1
 
-bash tests/run_all.sh   # integration + hallucination suite on real binary
+bash dont_read_me_src/tests/run_all.sh
 ```
 
-## Git commit style (match `tokenc` / RepnikovPavel)
+## Layout (like tokenc)
 
-Reference: the owner's **tokenc** repo voice — not Conventional Commits as Author.
+Top-level is self-describing — only open what you need:
+
+| Path | Meaning |
+|------|---------|
+| `dont_read_me_src/` | Implementation (C++, oracles, tests, benchmarks, UI) |
+| `if_necessary_you_can_read_me/` | Extra docs + integrations |
+| `read_me_if_it_is_not_installed/` | Install helpers |
+| `prompt.txt` / `AGENTS.md` / `README.md` | Agent + human entry |
+
+Do not invent more first-class folders at the repo root.
+
+## Git commit style (match `tokenc` / RepnikovPavel)
 
 1. **Author** (always):
    ```
    RepnikovPavel <RepnikovPavel@users.noreply.github.com>
    ```
-   Do **not** set Author to `Grok Build`, `OpenCode Agent`, or other bot identities.
+   Do **not** set Author to a bot name.
 
-2. **Subject**: short **imperative English sentence** (title case OK), like tokenc:
-   - Good: `Add FEEDBACK on stderr for failed claims`
-   - Good: `Expand OpenMMLab scan to full org repos`
-   - Good: `Document commit authorship for agents`
-   - Avoid as the only style: `feat(scope): …` / `fix(ui): …` unless the rest of the
-     message still reads like a plain English change note.
+2. **Subject**: short imperative English sentence (`Add …`, `Fix …`, `Document …`).
 
-3. **Body**: plain prose explaining *why* and what changed; complete sentences.
+3. **Body**: plain prose explaining *why*.
 
-4. **Agent credit** (required by `/grok`, without stealing Author):
+4. **Agent credit** (required by `/grok` — **not** as Author):
    ```
-   Co-authored-by: Grok Build implementer <grok-build@x.ai>
+   Co-authored-by: Grok 4.5 <grok@x.ai>
    ```
-   Also put model version in the body or a trailer, e.g. `Model: Grok 4.5 (xAI)`.
+   Use the literal name **Grok 4.5** (not "Grok Build implementer").
 
 5. Never commit secrets (`/grok/secrets.md`, tokens, passwords, private keys).
 
@@ -85,7 +90,7 @@ Document commit authorship for agents
 Align ghar agent commits with the tokenc style: human Author, imperative
 subject, explanatory body, agent via Co-authored-by.
 
-Co-authored-by: Grok Build implementer <grok-build@x.ai>
+Co-authored-by: Grok 4.5 <grok@x.ai>
 ```
 
 ## This repository

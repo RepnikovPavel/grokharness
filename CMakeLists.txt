@@ -50,31 +50,31 @@ enable_testing()
 set(GHAR_BIN "$<TARGET_FILE:ghar>")
 
 add_test(NAME integration_cli_smoke
-    COMMAND bash "${CMAKE_SOURCE_DIR}/tests/test_cli_smoke.sh")
+    COMMAND bash "${CMAKE_SOURCE_DIR}/dont_read_me_src/tests/test_cli_smoke.sh")
 add_test(NAME integration_compile_run
-    COMMAND bash "${CMAKE_SOURCE_DIR}/tests/test_compile_run.sh")
+    COMMAND bash "${CMAKE_SOURCE_DIR}/dont_read_me_src/tests/test_compile_run.sh")
 add_test(NAME integration_import_assert_gate
-    COMMAND bash "${CMAKE_SOURCE_DIR}/tests/test_import_assert_gate.sh")
+    COMMAND bash "${CMAKE_SOURCE_DIR}/dont_read_me_src/tests/test_import_assert_gate.sh")
 add_test(NAME integration_cuda
-    COMMAND bash "${CMAKE_SOURCE_DIR}/tests/test_cuda.sh")
+    COMMAND bash "${CMAKE_SOURCE_DIR}/dont_read_me_src/tests/test_cuda.sh")
 add_test(NAME integration_verify
-    COMMAND bash "${CMAKE_SOURCE_DIR}/tests/test_verify.sh")
+    COMMAND bash "${CMAKE_SOURCE_DIR}/dont_read_me_src/tests/test_verify.sh")
 add_test(NAME integration_work
-    COMMAND bash "${CMAKE_SOURCE_DIR}/tests/test_work.sh")
+    COMMAND bash "${CMAKE_SOURCE_DIR}/dont_read_me_src/tests/test_work.sh")
 add_test(NAME integration_bugs
-    COMMAND bash "${CMAKE_SOURCE_DIR}/tests/test_bugs.sh")
+    COMMAND bash "${CMAKE_SOURCE_DIR}/dont_read_me_src/tests/test_bugs.sh")
 add_test(NAME integration_python_torch
-    COMMAND bash "${CMAKE_SOURCE_DIR}/tests/test_python_torch.sh")
+    COMMAND bash "${CMAKE_SOURCE_DIR}/dont_read_me_src/tests/test_python_torch.sh")
 add_test(NAME hallucination_suite
-    COMMAND bash "${CMAKE_SOURCE_DIR}/benchmarks/run_hallucination_suite.sh")
+    COMMAND bash "${CMAKE_SOURCE_DIR}/dont_read_me_src/benchmarks/run_hallucination_suite.sh")
 add_test(NAME py_torch_suite
-    COMMAND bash "${CMAKE_SOURCE_DIR}/benchmarks/run_py_torch_suite.sh")
+    COMMAND bash "${CMAKE_SOURCE_DIR}/dont_read_me_src/benchmarks/run_py_torch_suite.sh")
 add_test(NAME perf_uplift
-    COMMAND bash "${CMAKE_SOURCE_DIR}/benchmarks/run_perf_uplift.sh")
+    COMMAND bash "${CMAKE_SOURCE_DIR}/dont_read_me_src/benchmarks/run_perf_uplift.sh")
 add_test(NAME real_model_eval
-    COMMAND bash "${CMAKE_SOURCE_DIR}/benchmarks/run_real_model_eval.sh")
+    COMMAND bash "${CMAKE_SOURCE_DIR}/dont_read_me_src/benchmarks/run_real_model_eval.sh")
 add_test(NAME uplift_report
-    COMMAND bash "${CMAKE_SOURCE_DIR}/scripts/run_uplift_report.sh")
+    COMMAND bash "${CMAKE_SOURCE_DIR}/dont_read_me_src/scripts/run_uplift_report.sh")
 
 set_tests_properties(
     integration_cli_smoke

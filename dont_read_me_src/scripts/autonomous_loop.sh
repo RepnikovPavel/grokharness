@@ -4,7 +4,7 @@
 #   bash scripts/autonomous_loop.sh 120 "implement X end-to-end"
 # The AGENT still does the real work; this script enforces heartbeats + verify cadence.
 set -euo pipefail
-ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 GHAR="${GHAR:-$ROOT/build/ghar}"
 MINUTES="${1:-120}"
 GOAL="${2:-autonomous work session}"

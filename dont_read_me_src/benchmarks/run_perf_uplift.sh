@@ -3,7 +3,7 @@
 # Outputs: results/perf_uplift.tsv + human table.
 set -euo pipefail
 
-ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 GHAR="${GHAR:-$ROOT/build/ghar}"
 OUT_DIR="${OUT_DIR:-$ROOT/results}"
 mkdir -p "$OUT_DIR"
@@ -18,9 +18,9 @@ WARMUP="${BENCH_WARMUP:-2}"
 
 echo "== Build workloads (ghar compile) =="
 "$GHAR" init >/dev/null
-"$GHAR" compile "$ROOT/benchmarks/workloads/matmul_naive.cpp" \
+"$GHAR" compile "$ROOT/dont_read_me_src/benchmarks/workloads/matmul_naive.cpp" \
   --name matmul_naive_build --flag -O2 >/dev/null
-"$GHAR" compile "$ROOT/benchmarks/workloads/matmul_opt.cpp" \
+"$GHAR" compile "$ROOT/dont_read_me_src/benchmarks/workloads/matmul_opt.cpp" \
   --name matmul_opt_build --flag -O2 >/dev/null
 
 NAIVE_BIN="./.ghar/bin_matmul_naive_build"
@@ -116,7 +116,7 @@ if command -v nvcc >/dev/null 2>&1 || [[ -x /usr/local/cuda/bin/nvcc ]]; then
   echo "== CUDA SAXPY block-size probe (optional) =="
   set +e
   NVCC="${NVCC:-$(command -v nvcc 2>/dev/null || echo /usr/local/cuda/bin/nvcc)}"
-  "$NVCC" -O2 -o saxpy "$ROOT/benchmarks/workloads/saxpy_cuda.cu"
+  "$NVCC" -O2 -o saxpy "$ROOT/dont_read_me_src/benchmarks/workloads/saxpy_cuda.cu"
   nvcc_rc=$?
   if [[ "$nvcc_rc" -eq 0 ]]; then
     NCUDA="${CUDA_N:-16777216}"

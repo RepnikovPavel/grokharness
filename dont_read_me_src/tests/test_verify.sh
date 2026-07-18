@@ -37,10 +37,10 @@ lint_cmd=true
 EOF
 assert_exit 0 "$GHAR" verify --step build --no-gate
 
-# scaffold writes integrations
+# scaffold writes integrations under tokenc-style if_necessary_you_can_read_me/
 assert_exit 0 "$GHAR" scaffold --force
-assert_eq "$(test -f integrations/claude/ghar-stop.sh && echo yes)" "yes" "claude stop hook"
-assert_eq "$(test -f integrations/aider/README.md && echo yes)" "yes" "aider readme"
+assert_eq "$(test -f if_necessary_you_can_read_me/integrations/claude/ghar-stop.sh && echo yes)" "yes" "claude stop hook"
+assert_eq "$(test -f if_necessary_you_can_read_me/integrations/aider/README.md && echo yes)" "yes" "aider readme"
 assert_eq "$(test -f AGENTS.md && echo yes)" "yes" "AGENTS.md"
 
 summary test_verify

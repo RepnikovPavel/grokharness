@@ -5,7 +5,7 @@ source "$(dirname "$0")/common.sh"
 
 echo "== test_hallucination_suite =="
 
-SUITE="$ROOT/benchmarks/run_hallucination_suite.sh"
+SUITE="$ROOT/dont_read_me_src/benchmarks/run_hallucination_suite.sh"
 if [[ -f "$SUITE" ]]; then suite_exists=yes; else suite_exists=no; fi
 assert_eq "$suite_exists" "yes" "suite script exists"
 

@@ -8,7 +8,7 @@
 services:
   ui:
     build:
-      context: .
+      context: dont_read_me_src
       dockerfile: ui/Dockerfile
     image: ghar-ui:local
     container_name: ghar-ui
@@ -20,7 +20,7 @@ services:
       GHAR_UI_PORT: "8765"
     volumes:
       - ./results:/data/results:ro
-      - ./ui/sample_results:/data/sample:ro
+      - ./dont_read_me_src/ui/sample_results:/data/sample:ro
     healthcheck:
       test:
         [

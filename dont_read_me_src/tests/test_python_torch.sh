@@ -3,8 +3,8 @@
 source "$(dirname "$0")/common.sh"
 
 export GHAR_ROOT="$ROOT"
-PY="$ROOT/testdata/python"
-TORCH="$ROOT/testdata/torch"
+PY="$ROOT/dont_read_me_src/testdata/python"
+TORCH="$ROOT/dont_read_me_src/testdata/torch"
 
 echo "== test_python_torch =="
 work="$TMPBASE/pytorch"

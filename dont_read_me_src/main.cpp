@@ -78,7 +78,7 @@ void print_help()
         "Exit: 0 ok | 1 usage | 2 tool | 3 IO | 4 verify/work block\n"
         "Config: ghar.conf  Env: GHAR_MIN_WORK_MINUTES GHAR_ROOT\n"
         "State: .ghar/{work,claims,results,session}.tsv\n"
-        "Oracle: oracles/py_torch_validate.py (pure program checks)\n",
+        "Oracle: dont_read_me_src/oracles/py_torch_validate.py (pure program checks)\n",
         stdout);
 }
 

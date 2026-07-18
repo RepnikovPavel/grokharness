@@ -3,7 +3,7 @@
 # Metrics: catch_rate, false_positive_rate, precision, recall, latency_ms.
 set -euo pipefail
 
-ROOT="$(cd "$(dirname "$0")/.." && pwd)"
+ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
 GHAR="${GHAR:-$ROOT/build/ghar}"
 OUT_DIR="${OUT_DIR:-$ROOT/results}"
 mkdir -p "$OUT_DIR"
@@ -29,8 +29,8 @@ BIN="./.ghar/bin_hello_bin"
 
 # Precompute real matmul speedup for H08 (truth claim)
 N="${MATMUL_N:-192}"
-g++ -O2 -std=c++17 -o mat_naive "$ROOT/benchmarks/workloads/matmul_naive.cpp"
-g++ -O2 -std=c++17 -o mat_opt "$ROOT/benchmarks/workloads/matmul_opt.cpp"
+g++ -O2 -std=c++17 -o mat_naive "$ROOT/dont_read_me_src/benchmarks/workloads/matmul_naive.cpp"
+g++ -O2 -std=c++17 -o mat_opt "$ROOT/dont_read_me_src/benchmarks/workloads/matmul_opt.cpp"
 "$GHAR" bench --name mat_naive --warmup 1 --repeat 5 -- ./mat_naive "$N" 1 >/dev/null
 "$GHAR" bench --name mat_opt --warmup 1 --repeat 5 -- ./mat_opt "$N" 1 >/dev/null
 # speedup via baseline

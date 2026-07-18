@@ -17,7 +17,7 @@ else
 fi
 
 if [[ -x /usr/local/cuda/bin/nvcc ]] || command -v nvcc >/dev/null 2>&1; then
-  cp "$ROOT/testdata/add.cu" ./add.cu
+  cp "$ROOT/dont_read_me_src/testdata/add.cu" ./add.cu
   assert_exit 0 "$GHAR" cuda add.cu --name kadd
 else
   echo "  SKIP nvcc compile (no nvcc)"

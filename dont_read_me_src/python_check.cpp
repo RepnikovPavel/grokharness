@@ -112,12 +112,16 @@ std::string oracle_script_path()
     // Search common locations relative to binary and cwd
     std::vector<std::string> cands;
     const std::string env = getenv_or("GHAR_ROOT", "");
-    if (!env.empty())
+    if (!env.empty()) {
+        cands.push_back(join_path(env, "dont_read_me_src/oracles/py_torch_validate.py"));
         cands.push_back(join_path(env, "oracles/py_torch_validate.py"));
+    }
+    cands.push_back(join_path(exe_dir(), "../dont_read_me_src/oracles/py_torch_validate.py"));
+    cands.push_back(join_path(exe_dir(), "../../dont_read_me_src/oracles/py_torch_validate.py"));
     cands.push_back(join_path(exe_dir(), "../oracles/py_torch_validate.py"));
     cands.push_back(join_path(exe_dir(), "oracles/py_torch_validate.py"));
+    cands.push_back("dont_read_me_src/oracles/py_torch_validate.py");
     cands.push_back("oracles/py_torch_validate.py");
-    cands.push_back(join_path(exe_dir(), "../../oracles/py_torch_validate.py"));
 
     for (const auto& p : cands) {
         if (is_file(p))
