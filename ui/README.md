@@ -1,35 +1,36 @@
 # ghar local results UI
 
-Shows **concrete** ghar results in a browser:
+One local dashboard for **measured** ghar outputs:
 
-1. **Code findings** — kind, path, line/attr, detail  
-2. **Coding-model hallu** — per-trial case id, claim, ghar exit, caught  
-3. **Benchmarks list** — synthetic / py-torch / real-model / perf / code scan  
+| Page | Shows |
+|------|--------|
+| `/` | Counts + top actionable findings + model catches |
+| `/findings` | Path / attr / kind (default: hide npu/mlu noise) |
+| `/real-model` | Per-trial coding-model claims + ghar exit |
+| `/hallucinations` | Synthetic + py/torch labeled suites |
+| `/benchmarks` | Catalog of hallu-search suites |
 
-## Docker Compose (recommended)
-
-From repo root (after you have run suites into `results/`):
+## Run
 
 ```sh
+# from repo root
 docker compose up --build
-# → http://127.0.0.1:8765/   (compose uses host networking + port 8765)
+# → http://127.0.0.1:8765/
 ```
 
-## Host (no Docker)
+Without Docker:
 
 ```sh
+# optional: point at your suite outputs
 export GHAR_RESULTS="$(pwd)/results"
 python3 ui/app.py
 ```
 
-## API
+If `results/` has no TSVs, the app uses `ui/sample_results/` so the UI is never blank.
 
-| Path | Returns |
-|------|---------|
-| `/api/health` | status + dashboard stats |
-| `/api/findings` | code findings JSON |
-| `/api/real-model` | real_model_cases rows |
-| `/api/hallucinations` | synthetic + py_torch cases |
-| `/api/benchmarks` | benchmark catalog |
+## Tests
 
-Data is read-only from `GHAR_RESULTS` (default: `./results`).
+```sh
+bash tests/test_ui_http.sh    # real HTTP against sample_results
+bash tests/test_ui_data.sh    # loaders against GHAR_RESULTS (defaults to results/)
+```

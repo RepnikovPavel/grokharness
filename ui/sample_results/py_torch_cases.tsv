@@ -1,0 +1,4 @@
+id	category	agent_claim	expect_exit	got_exit	status	caught	latency_ms	detail
+P02	python	syntax error claimed ok	4	4	pass	1	20.0	syntax_error line 2
+T02	torch-attr	SuperDuperLayer exists	4	4	pass	1	100.0	missing_attr: torch.nn.SuperDuperLayer
+T03	torch	linear forward ok	0	0	pass	0	90.0	torch validate ok

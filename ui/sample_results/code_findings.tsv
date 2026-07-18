@@ -1,0 +1,5 @@
+repo	path	kind	category	severity	line	attr	detail
+demo	models/net.py	missing_attr	api_missing	error	12	torch.nn.SuperDuperLayer	torch attr not found: torch.nn.SuperDuperLayer
+demo	train/loop.py	missing_attr	api_missing	error	44	torch.utils.data.PoolDataLoader	torch attr not found: torch.utils.data.PoolDataLoader
+demo	ops/sync_bn.py	missing_attr	api_missing	error	8	torch.distributed.group.WORLD	torch attr not found: torch.distributed.group.WORLD
+demo	vendor/device.py	missing_attr	accel_backend	info	3	torch.npu	optional vendor backend not on this torch build

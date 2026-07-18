@@ -1,0 +1,7 @@
+metric	value
+model	sample-fixture
+n_trials	3
+with_harness_catch_rate	1.0000
+without_harness_catch_rate	0.0000
+tp	2
+fn	0

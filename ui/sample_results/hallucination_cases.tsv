@@ -1,0 +1,4 @@
+id	category	agent_claim	expect_exit	got_exit	status	caught	latency_ms	detail
+H01	import	fake package exists	4	4	pass	1	12.0	missing imports: totally_fake_llm_package_xyz
+H02	import	sys imports	0	0	pass	0	8.0	all imports ok
+H03	compile	bad C++ compiles	4	4	pass	1	15.0	compile failed: undeclared identifier

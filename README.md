@@ -23,37 +23,27 @@ There is **no LLM-as-judge**. Execution and static oracles are the source of tru
 
 ## Local results UI (Docker Compose)
 
-See **concrete findings** (kind + path + line/attr), **local coding-model hallu trials**,
-and the **benchmark catalog** in a browser:
+One place to see **what failed, where**, for code and model-generated claims:
 
 ```sh
-# 1) produce artifacts (examples)
+# optional: generate fresh artifacts first
 cmake -S . -B build && cmake --build build -j"$(nproc)"
-bash benchmarks/run_hallucination_suite.sh
 bash benchmarks/run_py_torch_suite.sh
-bash benchmarks/run_real_model_eval.sh   # needs Ollama, or uses fixtures
 
-# 2) open UI
 docker compose up --build
-# → http://127.0.0.1:8765/
+# open http://127.0.0.1:8765/
 ```
 
-| UI page | Content |
-|---------|---------|
-| `/findings` | What was found in code — kind, category, path, attr, detail |
-| `/real-model` | Local coding-model trials — case id, claim, ghar exit, caught |
-| `/hallucinations` | Synthetic labeled claims (general + Python/Torch suites) |
-| `/benchmarks` | Catalog of hallu-search benchmarks + latest summaries |
-| `/api/*` | JSON for the same data |
+| Page | Content |
+|------|---------|
+| `/` | Actionable finding counts + top issues + model catches |
+| `/findings` | kind · path · attr · detail (noise filters on by default) |
+| `/real-model` | case id · claim · ghar exit · caught |
+| `/hallucinations` | labeled synthetic + Python/Torch suites |
+| `/benchmarks` | suite catalog + latest metrics |
 
-Details: [`ui/README.md`](ui/README.md).
-
-Without Docker:
-
-```sh
-export GHAR_RESULTS="$(pwd)/results"
-python3 ui/app.py
-```
+If `results/` is empty, the UI loads `ui/sample_results/` so pages are never blank.  
+Tests: `bash tests/test_ui_http.sh`. Details: [`ui/README.md`](ui/README.md).
 
 ## Proof it is not dead code (tests + uplift)
 

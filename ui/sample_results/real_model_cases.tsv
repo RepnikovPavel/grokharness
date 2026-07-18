@@ -1,0 +1,4 @@
+id	category	expect_false	extract_ok	ghar_invoked	claim	without_harness	with_harness_exit	caught_by_ghar	ghar_detail	response_fp
+RM01	import	1	1	1	totally_fake_pkg	accept	4	1	ghar import totally_fake_pkg exit=4	abc
+RM02	import	0	1	1	sys	accept	0	0	ghar import sys exit=0	def
+RM03	compile	1	1	1	broken.cpp	accept	4	1	ghar compile exit=4	ghi
