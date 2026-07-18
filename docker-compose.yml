@@ -1,0 +1,30 @@
+# Local ghar results UI
+#
+#   docker compose up --build
+#   open http://127.0.0.1:8080/
+#
+# Mounts ./results so the UI shows real suite/scan TSVs from the host.
+
+services:
+  ui:
+    build:
+      context: .
+      dockerfile: ui/Dockerfile
+    image: ghar-ui:local
+    container_name: ghar-ui
+    # host networking: reliable bind on developer machines / CI sandboxes
+    # where userland port-proxy returns empty replies. UI listens on GHAR_UI_PORT.
+    network_mode: host
+    environment:
+      GHAR_RESULTS: /data/results
+      GHAR_UI_HOST: "0.0.0.0"
+      GHAR_UI_PORT: "8765"
+    volumes:
+      - ./results:/data/results:ro
+    healthcheck:
+      test: ["CMD", "python3", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8765/api/health')"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+    restart: unless-stopped

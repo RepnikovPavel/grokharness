@@ -11,17 +11,10 @@ This directory exists so `ghar` is **not dead code**: every release can show
 | Optimization claims | “2× faster” is vibes | Timed `speedup` + assert | `speedup` (matmul) |
 | Delivery | Trust the model | `ghar gate` | exit 0 only if claims ok |
 
-## OpenMMLab org scan (public image benchmark)
+## Code scan (internal)
 
-Curated [open-mmlab](https://github.com/open-mmlab) checkouts → static `syntax` + `torch.*` attr scan.
-
-```sh
-bash benchmarks/run_openmmlab_scan.sh
-# → benchmarks/openmmlab/OPENMMLAB_SCAN.md  (also results/)
-# → benchmarks/openmmlab/openmmlab_findings.tsv
-```
-
-Config: [`openmmlab/repos.tsv`](openmmlab/repos.tsv). Oracle: `oracles/repo_scan.py`.
+Optional bulk static scan driver: `oracles/repo_scan.py` + `benchmarks/run_openmmlab_scan.sh`.
+Produces `results/*findings.tsv` for the local UI — not a public marketing pillar.
 
 ## Run
 
