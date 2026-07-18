@@ -1,0 +1,7 @@
+# name	url	ref	package_globs (comma-separated relative to repo root)
+# Curated OpenMMLab targets for ghar static scan (syntax + torch attrs).
+mmengine	https://github.com/open-mmlab/mmengine.git	main	mmengine
+mmcv	https://github.com/open-mmlab/mmcv.git	master	mmcv
+mmpose	https://github.com/open-mmlab/mmpose.git	main	mmpose
+mmdetection	https://github.com/open-mmlab/mmdetection.git	main	mmdet
+mmsegmentation	https://github.com/open-mmlab/mmsegmentation.git	main	mmseg

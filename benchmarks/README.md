@@ -11,6 +11,18 @@ This directory exists so `ghar` is **not dead code**: every release can show
 | Optimization claims | “2× faster” is vibes | Timed `speedup` + assert | `speedup` (matmul) |
 | Delivery | Trust the model | `ghar gate` | exit 0 only if claims ok |
 
+## OpenMMLab org scan (public image benchmark)
+
+Curated [open-mmlab](https://github.com/open-mmlab) checkouts → static `syntax` + `torch.*` attr scan.
+
+```sh
+bash benchmarks/run_openmmlab_scan.sh
+# → benchmarks/openmmlab/OPENMMLAB_SCAN.md  (also results/)
+# → benchmarks/openmmlab/openmmlab_findings.tsv
+```
+
+Config: [`openmmlab/repos.tsv`](openmmlab/repos.tsv). Oracle: `oracles/repo_scan.py`.
+
 ## Run
 
 ```sh
@@ -20,6 +32,8 @@ bash scripts/run_uplift_report.sh   # tests + synthetic + perf + real-model
 # or pieces:
 bash tests/run_all.sh
 bash benchmarks/run_hallucination_suite.sh
+bash benchmarks/run_py_torch_suite.sh
+bash benchmarks/run_openmmlab_scan.sh
 bash benchmarks/run_perf_uplift.sh
 ollama pull qwen2.5-coder:1.5b
 bash benchmarks/run_real_model_eval.sh

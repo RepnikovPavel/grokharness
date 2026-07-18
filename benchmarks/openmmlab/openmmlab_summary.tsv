@@ -1,0 +1,6 @@
+repo	root	torch_version	files_scanned	syntax_ok	syntax_fail	torch_files	torch_attr_refs	missing_attr_findings	findings_total	syntax_error_n	missing_attr_n	api_missing_n	accel_backend_n	build_flavor_n	wall_s
+mmengine	/home/user/grokharness/results/openmmlab_cache/mmengine	2.6.0+cu124	150	150	0	82	448	50	50	0	50	2	45	3	1.782
+mmcv	/home/user/grokharness/results/openmmlab_cache/mmcv	2.6.0+cu124	226	226	0	149	966	16	16	0	16	3	11	2	1.246
+mmpose	/home/user/grokharness/results/openmmlab_cache/mmpose	2.6.0+cu124	303	303	0	140	933	0	0	0	0	0	0	0	1.005
+mmdetection	/home/user/grokharness/results/openmmlab_cache/mmdetection	2.6.0+cu124	603	603	0	377	2217	1	1	0	1	1	0	0	1.914
+mmsegmentation	/home/user/grokharness/results/openmmlab_cache/mmsegmentation	2.6.0+cu124	198	198	0	124	789	0	0	0	0	0	0	0	0.630
