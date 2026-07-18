@@ -42,8 +42,14 @@ INTEGRATIONS
   Agents:      AGENTS.md
 
 OUTPUT
-  TSV on stdout; FEEDBACK block on stderr when a step fails
+  TSV on stdout; FEEDBACK block on stderr when a claim fails
+  (import/compile/assert/python/torch/verify step/gate — not silent fail)
   --format for human tables
+  Dirty gate after intentional fail demos: ghar reset  (then re-verify)
+
+PROVE IT CATCHES MODEL LIES (no LLM judge)
+  bash benchmarks/run_hallucination_suite.sh   # H01–H10; need fn=0 fp=0
+  bash tests/run_all.sh                        # includes hallucination suite
 
 DO NOT
   Use another LLM to “review” instead of verify

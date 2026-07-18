@@ -37,6 +37,18 @@ Full autonomous setup for humans wiring Claude/Aider/Grok:
 - Project: `ghar.conf` → `build_cmd` / `test_cmd`
 - Aider: `aider --test-cmd 'ghar verify' --auto-test`
 - Claude Stop: `integrations/claude/ghar-stop.sh`
+- On fail: read **FEEDBACK** on stderr (exit 4) → fix → re-run. Not silent.
+- Intentional fail demos leave claims: `ghar reset` before a clean gate.
+
+## Catching model hallucinations (run these)
+
+```sh
+# Synthetic agent lies vs programmatic checks (import/compile/symbols/assert/run)
+bash benchmarks/run_hallucination_suite.sh
+# → results/hallucination_summary.tsv  must show fn=0 fp=0 recall_catch_rate=1
+
+bash tests/run_all.sh   # integration + hallucination suite on real binary
+```
 
 ## This repository
 

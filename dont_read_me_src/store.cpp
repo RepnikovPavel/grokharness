@@ -295,6 +295,23 @@ int finish_check(Store& store, CheckResult r, bool pretty, bool silent)
     if (!silent)
         print_check_result(r, pretty);
 
+    // Agent fix-loop: always surface actionable FEEDBACK on stderr for non-ok
+    // claims (import/compile/assert/python/torch/…), not only `ghar verify`.
+    // TSV stays on stdout; agents that only tail stderr still get a signal.
+    if (!silent && r.status != "ok" && r.status != "skip") {
+        const char* label = r.name.empty() ? r.kind.c_str() : r.name.c_str();
+        std::fprintf(stderr, "\n======== ghar FEEDBACK (%s/%s) ========\n",
+                     r.kind.c_str(), label);
+        if (!r.detail.empty())
+            std::fprintf(stderr, "%s\n", r.detail.c_str());
+        auto it = r.metrics.find("feedback");
+        if (it != r.metrics.end() && !it->second.empty())
+            std::fprintf(stderr, "%s\n", it->second.c_str());
+        std::fprintf(stderr,
+                     "======== exit %d — fix, then re-run the same command or: ghar verify ========\n\n",
+                     r.exit_code == EXIT_OK ? EXIT_FAIL : r.exit_code);
+    }
+
     if (r.status == "ok" || r.status == "skip")
         return EXIT_OK;
     if (r.status == "error") {

@@ -31,6 +31,7 @@ if [[ "$RC" -ne 0 ]]; then
   exit 0
 fi
 
+# If long work session active, block stop until quotas ready (work status exit 0)
 if [[ -f "$ROOT/.ghar/work.tsv" ]] && grep -q $'status\tactive' "$ROOT/.ghar/work.tsv" 2>/dev/null; then
   set +e
   WOUT="$("$GHAR" work status -C "$ROOT" 2>&1)"

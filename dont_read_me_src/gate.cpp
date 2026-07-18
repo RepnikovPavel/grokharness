@@ -86,9 +86,35 @@ int cmd_gate(const std::string& root, bool pretty)
             std::fputs(
                 "gate: no substantive claims — run compile/cuda/import/python/torch/bench/… first\n",
                 stdout);
+        std::fprintf(stderr,
+                     "\n======== ghar FEEDBACK (gate) ========\n"
+                     "no substantive claims yet — run compile|import|python|torch|test|… first\n"
+                     "======== exit 4 — do not deliver ========\n\n");
         return EXIT_FAIL;
     }
-    return fail == 0 ? EXIT_OK : EXIT_FAIL;
+    if (fail != 0) {
+        // List failing claims so agents know what to fix or ghar reset.
+        std::fprintf(stderr,
+                     "\n======== ghar FEEDBACK (gate) ========\n"
+                     "gate FAIL: %d failing claim(s) (ok=%d). Failed names:\n",
+                     fail, ok);
+        int shown = 0;
+        for (const auto& c : counted) {
+            if (c.status == "ok" || c.status == "skip")
+                continue;
+            std::fprintf(stderr, "  - %s (%s) status=%s\n", c.name.c_str(), c.kind.c_str(),
+                         c.status.c_str());
+            if (++shown >= 20) {
+                std::fprintf(stderr, "  … (%d more; ghar report --claims)\n", fail - shown);
+                break;
+            }
+        }
+        std::fprintf(stderr,
+                     "Fix those claims, or clear intentional fails with: ghar reset\n"
+                     "======== exit 4 — do not deliver ========\n\n");
+        return EXIT_FAIL;
+    }
+    return EXIT_OK;
 }
 
 int cmd_reset(const std::string& root, bool keep_results)
