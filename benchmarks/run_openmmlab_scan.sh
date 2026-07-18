@@ -35,15 +35,23 @@ rm -f "$FINDINGS" "$SUMMARY"
 : > "$LOG"
 
 TORCH_VER=$(python3 -c 'import torch; print(torch.__version__)' 2>/dev/null || echo n/a)
+# Optional: NO_TORCH=1 forces syntax-only; auto when torch missing
+NO_TORCH_FLAG=()
+if [[ "${NO_TORCH:-0}" == "1" ]] || [[ "$TORCH_VER" == "n/a" ]]; then
+  NO_TORCH_FLAG=(--no-torch)
+fi
 echo "############################################################" | tee -a "$LOG"
 echo "# ghar × OpenMMLab static scan" | tee -a "$LOG"
-echo "# cache=$CACHE torch=$TORCH_VER" | tee -a "$LOG"
+echo "# cache=$CACHE torch=$TORCH_VER no_torch_flag=${NO_TORCH_FLAG[*]:-}" | tee -a "$LOG"
+echo "# repos_tsv=$REPOS_TSV" | tee -a "$LOG"
 echo "############################################################" | tee -a "$LOG"
 
 TS_START=$(date -u +%Y-%m-%dT%H:%M:%SZ)
 t0=$(date +%s)
 
 first=1
+cloned_ok=0
+clone_fail=0
 while IFS=$'\t' read -r name url ref globs || [[ -n "${name:-}" ]]; do
   [[ -z "${name:-}" || "$name" =~ ^# ]] && continue
 
@@ -60,10 +68,12 @@ while IFS=$'\t' read -r name url ref globs || [[ -n "${name:-}" ]]; do
     if ! git clone --depth "$DEPTH" --branch "$ref" --single-branch "$url" "$dest" >>"$LOG" 2>&1; then
       git clone --depth "$DEPTH" "$url" "$dest" >>"$LOG" 2>&1 || {
         echo "  FAIL clone $name" | tee -a "$LOG"
+        clone_fail=$((clone_fail + 1))
         continue
       }
     fi
   fi
+  cloned_ok=$((cloned_ok + 1))
 
   sha=$(git -C "$dest" rev-parse --short HEAD 2>/dev/null || echo unknown)
   echo "  [scan] $name @$sha globs=${globs:-.}" | tee -a "$LOG"
@@ -79,17 +89,23 @@ while IFS=$'\t' read -r name url ref globs || [[ -n "${name:-}" ]]; do
     --max-files "$MAX_FILES" \
     --findings "$FINDINGS" \
     --summary "$SUMMARY" \
+    "${NO_TORCH_FLAG[@]}" \
     "${append[@]}" 2>&1 | tee -a "$LOG"
   first=0
 
   # Spot-check first package .py through shipped ghar CLI
-  sample=$(find "$dest/${globs%%,*}" -name '*.py' 2>/dev/null | head -1 || true)
+  search_root="$dest"
+  if [[ -n "${globs:-}" ]]; then
+    search_root="$dest/${globs%%,*}"
+  fi
+  sample=$(find "$search_root" -name '*.py' 2>/dev/null | head -1 || true)
   if [[ -n "$sample" && -f "$sample" ]]; then
     set +e
     "$GHAR" python --file "$sample" --no-imports --name "omml_${name}_spot" >>"$LOG" 2>&1
     set -e
   fi
 done < "$REPOS_TSV"
+echo "# clone_ok=$cloned_ok clone_fail=$clone_fail" | tee -a "$LOG"
 
 t1=$(date +%s)
 elapsed=$((t1 - t0))

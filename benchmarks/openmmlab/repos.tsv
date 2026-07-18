@@ -1,7 +1,56 @@
 # name	url	ref	package_globs (comma-separated relative to repo root)
-# Curated OpenMMLab targets for ghar static scan (syntax + torch attrs).
-mmengine	https://github.com/open-mmlab/mmengine.git	main	mmengine
-mmcv	https://github.com/open-mmlab/mmcv.git	master	mmcv
-mmpose	https://github.com/open-mmlab/mmpose.git	main	mmpose
+# Full public open-mmlab org (GitHub API). Empty globs = all .py (oracle skip-dirs apply).
+# Authored for ghar full-org static scan pillar.
+Amphion	https://github.com/open-mmlab/Amphion.git	main	
+AnyControl	https://github.com/open-mmlab/AnyControl.git	main	
+awesome-vit	https://github.com/open-mmlab/awesome-vit.git	main	
+cocoapi	https://github.com/open-mmlab/cocoapi.git	master	
+denseflow	https://github.com/open-mmlab/denseflow.git	master	
+ecosystem	https://github.com/open-mmlab/ecosystem.git	master	
+FaceShot	https://github.com/open-mmlab/FaceShot.git	master	
+FoleyCrafter	https://github.com/open-mmlab/FoleyCrafter.git	main	
+labelbee	https://github.com/open-mmlab/labelbee.git	main	
+labelbee-client	https://github.com/open-mmlab/labelbee-client.git	main	
+Live2Diff	https://github.com/open-mmlab/Live2Diff.git	main	
+mdformat-openmmlab	https://github.com/open-mmlab/mdformat-openmmlab.git	master	
+mim	https://github.com/open-mmlab/mim.git	main	mim
+mim-example	https://github.com/open-mmlab/mim-example.git	master	
+mmaction	https://github.com/open-mmlab/mmaction.git	master	
+mmaction2	https://github.com/open-mmlab/mmaction2.git	main	mmaction
+mmagic	https://github.com/open-mmlab/mmagic.git	main	mmagic
+mmcv	https://github.com/open-mmlab/mmcv.git	main	mmcv
+mmdeploy	https://github.com/open-mmlab/mmdeploy.git	main	mmdeploy
 mmdetection	https://github.com/open-mmlab/mmdetection.git	main	mmdet
+mmdetection3d	https://github.com/open-mmlab/mmdetection3d.git	main	mmdet3d
+mmengine	https://github.com/open-mmlab/mmengine.git	main	mmengine
+mmengine-template	https://github.com/open-mmlab/mmengine-template.git	main	
+mmeval	https://github.com/open-mmlab/mmeval.git	main	mmeval
+mmfashion	https://github.com/open-mmlab/mmfashion.git	master	
+mmfewshot	https://github.com/open-mmlab/mmfewshot.git	main	mmfewshot
+mmflow	https://github.com/open-mmlab/mmflow.git	master	mmflow
+MMGEN-FaceStylor	https://github.com/open-mmlab/MMGEN-FaceStylor.git	master	
+mmgeneration	https://github.com/open-mmlab/mmgeneration.git	master	mmgen
+mmhuman3d	https://github.com/open-mmlab/mmhuman3d.git	main	mmhuman3d
+mmocr	https://github.com/open-mmlab/mmocr.git	main	mmocr
+mmpose	https://github.com/open-mmlab/mmpose.git	main	mmpose
+mmpose-webcam-demo	https://github.com/open-mmlab/mmpose-webcam-demo.git	main	
+mmpretrain	https://github.com/open-mmlab/mmpretrain.git	main	mmpretrain
+mmrazor	https://github.com/open-mmlab/mmrazor.git	main	mmrazor
+mmrotate	https://github.com/open-mmlab/mmrotate.git	main	mmrotate
 mmsegmentation	https://github.com/open-mmlab/mmsegmentation.git	main	mmseg
+mmselfsup	https://github.com/open-mmlab/mmselfsup.git	main	mmselfsup
+mmskeleton	https://github.com/open-mmlab/mmskeleton.git	master	
+mmstyles	https://github.com/open-mmlab/mmstyles.git	master	
+mmtracking	https://github.com/open-mmlab/mmtracking.git	master	mmtrack
+mmyolo	https://github.com/open-mmlab/mmyolo.git	main	mmyolo
+Multimodal-GPT	https://github.com/open-mmlab/Multimodal-GPT.git	main	
+OpenMMLabCamp	https://github.com/open-mmlab/OpenMMLabCamp.git	main	
+OpenMMLabCourse	https://github.com/open-mmlab/OpenMMLabCourse.git	main	
+OpenPCDet	https://github.com/open-mmlab/OpenPCDet.git	master	pcdet
+OpenUnReID	https://github.com/open-mmlab/OpenUnReID.git	master	
+PIA	https://github.com/open-mmlab/PIA.git	main	
+playground	https://github.com/open-mmlab/playground.git	main	
+PowerPaint	https://github.com/open-mmlab/PowerPaint.git	main	
+pre-commit-hooks	https://github.com/open-mmlab/pre-commit-hooks.git	master	
+pytorch_sphinx_theme	https://github.com/open-mmlab/pytorch_sphinx_theme.git	master	
+StyleShot	https://github.com/open-mmlab/StyleShot.git	main	
